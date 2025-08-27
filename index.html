@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaNe308作品/工具集</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+        }
+        h2 {
+            color: #bbbbbb;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #cccccc;
+            margin-bottom: 5px;
+        }
+        p {
+            color: #aaaaaa;
+            line-height: 1.6;
+        }
+        .tabs {
+            display: flex;
+            margin: 20px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+        .tab-btn:hover {
+            color: #0056b3;
+        }
+        .tab-content {
+            padding: 20px 0;
+        }
+        .game-item, .tool-item {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #444;
+        }
+        .play-btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .play-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NaNe308作品/工具集</h1>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('games')">游戏</button>
+            <button class="tab-btn" onclick="openTab('tools')">工具</button>
+        </div>
+        
+        <div id="games" class="tab-content" style="display:block;">
+            <h2>游戏列表</h2>
+            <div class="game-item">
+                <h3>物质放置</h3>
+                <p>一个有趣的放置（？）类游戏</p>
+                <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/matterldle/', '_blank')">开始游玩</button>
+            </div>
+        </div>
+        
+        <div id="tools" class="tab-content" style="display:none;">
+            <h2>工具列表</h2>
+            <div class="tool-item">
+                <h3>Unicode 工具</h3>
+                <p>可以对称加密，还可以偏移码位来实现加密</p>
+                <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/UnicodeOffset/', '_blank')">使用工具</button>
+            </div>
+            <div class="tool-item">
+                <h3>我的世界字符极种子工具</h3>
+                <p>使用 Java 版的算法将字符转换为种子</p>
+                <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/MCharacter-seed/', '_blank')">使用工具</button>
+            </div>
+            <div class="tool-item">
+                <h3>葛立恒数计算器</h3>
+                <p>计算和表示极其庞大的葛立恒数，支持多种大数表示符号</p>
+                <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/GrahalCalculator/', '_blank')">使用工具</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openTab(tabName) {
+            // 隐藏所有标签内容
+            var tabContents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = 'none';
+            }
+            
+            // 移除所有按钮的active类
+            var tabButtons = document.getElementsByClassName('tab-btn');
+            for (var i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            // 显示选中的标签内容并激活对应的按钮
+            document.getElementById(tabName).style.display = 'block';
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
