@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaNe308作品/工具集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        /* 霓虹灯背景效果 */
+        .background-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 255, 128, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        /* 半圆霓虹灯计数器 */
+        .semicircle-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            margin-bottom: 0;
+            background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+            overflow: hidden;
+        }
+        
+        .semicircle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 0 0 50% 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid #00ffff;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 -10px 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .nan-counter {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff;
+            text-align: center;
+            padding: 20px;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
+        
+        /* 极简样式 - 无动画 */
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.9);
+            padding: 40px;
+            border-top: 1px solid #333;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #222;
+        }
+        
+        h1 {
+            color: #00ffff;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #00ffff;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        
+        .tab-btn {
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid #333;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: #666;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn:hover {
+            color: #00ffff;
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+        
+        .tab-btn.active {
+            color: #00ffff;
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #222;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .game-item, .tool-item {
+            background: rgba(25, 25, 25, 0.9);
+            padding: 30px;
+            border: 1px solid #222;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-item:hover, .tool-item:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .game-item:before, .tool-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .game-item:hover:before, .tool-item:hover:before {
+            left: 100%;
+        }
+        
+        h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .play-btn {
+            background: transparent;
+            color: #00ffff;
+            padding: 12px 30px;
+            border: 1px solid #00ffff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .play-btn:hover {
+            background: #00ffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            color: #333;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            border-top: 1px solid #111;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .nan-counter {
+                font-size: 1.6rem;
+            }
+            
+            .items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 霓虹灯背景效果 -->
+    <div class="background-glow"></div>
+    
+    <!-- 半圆霓虹灯计数器 -->
+    <div class="semicircle-container">
+        <div class="semicircle">
+            <div class="nan-counter" id="nanCounter">You created 0 NaNs!</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>NaNe308作品/工具集</h1>
+            <p class="subtitle">探索有趣的项目和实用工具</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('games')">游戏</button>
+            <button class="tab-btn" onclick="openTab('tools')">工具</button>
+        </div>
+        
+        <div id="games" class="tab-content" style="display:block;">
+            <h2>游戏列表</h2>
+            <div class="items-container">
+                <div class="game-item">
+                    <h3>物质放置</h3>
+                    <p>一个有趣的放置（？）类游戏</p>
+                    <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/matteridle/', '_blank')">开始游玩</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tools" class="tab-content" style="display:none;">
+            <h2>工具列表</h2>
+            <div class="items-container">
+                <div class="tool-item">
+                    <h3>Unicode 工具</h3>
+                    <p>可以对称加密，还可以偏移码位来实现加密</p>
+                    <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/UnicodeOffset/', '_blank')">使用工具</button>
+                </div>
+                <div class="tool-item">
+                    <h3>我的世界字符极种子工具</h3>
+                    <p>使用 Java 版的算法将字符转换为种子</p>
+                    <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/MCharacter-seed/', '_blank')">使用工具</button>
+                </div>
+                <div class="tool-item">
+                    <h3>葛立恒数计算器</h3>
+                    <p>计算和表示极其庞大的葛立恒数，支持多种大数表示符号</p>
+                    <button class="play-btn" onclick="window.open('https://xhyadofai.github.io/GrahalCalculator/', '_blank')">使用工具</button>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+    
+    <!-- 引入ExpantaNum库和格式化库 -->
+    <script src="ExpantaNum.js"></script>
+    <script src="Format-ExpantaNum.js"></script>
+    
+    <script>
+        // 初始化NaN计数器
+        let nanCount = new ExpantaNum(2); 
+        
+        // 极简NaN计数器显示
+        function updateNaNCounter() {
+            const counterElement = document.getElementById('nanCounter');
+            if (counterElement) {
+                counterElement.textContent = `You created ${format(nanCount)} NaNs!`;
+            }
+        }
+        
+        // 多级节点式爆发增长 - 每秒一次
+        function growNaNCount() {
+            let growth;
+            
+            // 🔥节点1：指数跃迁 - 超爆发版
+            if (nanCount.lt(new ExpantaNum("10^^50"))) {
+                let expPower = nanCount.log10().div(new ExpantaNum(5)).add(5).min(50);
+                growth = nanCount.pow(expPower).mul(new ExpantaNum(10000));
+            }
+            // 💥节点2：tetration爆发 - 毁灭版
+            else if (nanCount.lt(new ExpantaNum("10^^250"))) {
+                let tetPower = nanCount.log10().log10().div(new ExpantaNum(1.5)).add(8).min(25);
+                growth = nanCount.tetrate(tetPower.floor()).mul(new ExpantaNum(1000000));
+            }
+            // ⚡节点2.5：e1e20跃迁 - 闪电版
+            else if (nanCount.lt(new ExpantaNum("e1e20"))) {
+                let ePower = nanCount.log10().log10().div(new ExpantaNum(2)).add(12).min(35);
+                growth = nanCount.tetrate(ePower.floor()).mul(new ExpantaNum(5e9));
+            }
+            // 🌪️节点3：pentation狂飙 - 龙卷风版
+            else if (nanCount.lt(new ExpantaNum("10^^^4"))) {
+                let pentPower = nanCount.log10().log10().log10().add(15).min(50);
+                growth = nanCount.tetrate(pentPower.floor()).mul(new ExpantaNum(5e15));
+            }
+            // 🔮节点4：hexation毁灭 - 黑洞版
+            else if (nanCount.lt(new ExpantaNum("10^^^16"))) {
+                let hexPower = nanCount.log10().log10().log10().log10().add(25).min(80);
+                growth = nanCount.tetrate(hexPower.floor()).mul(new ExpantaNum(5e100));
+            }
+            // 🌌节点5：heptation终极 - 宇宙版
+            else if (nanCount.lt(new ExpantaNum("10^^^^5"))) {
+                let heptPower = nanCount.log10().log10().log10().log10().log10().add(40).min(150);
+                growth = nanCount.tetrate(heptPower.floor()).mul(new ExpantaNum(500000));
+            }
+            // 🕳️节点6：octation永恒 - 虚空版
+            else {
+                let octPower = nanCount.log10().log10().log10().log10().log10().log10().add(60).min(250);
+                growth = nanCount.tetrate(octPower.floor()).mul(new ExpantaNum(1000000));
+            }
+            
+            // 🚀节点爆发加速器终极版
+            let nodeBoost = new ExpantaNum(10000).pow(
+                nanCount.log10().log10().log10().max(1)
+            );
+            
+            // ⚡跃迁乘数终极版
+            let transitionMulti = nanCount.log10().add(1).pow(5);
+            
+            growth = growth.mul(nodeBoost).mul(transitionMulti);
+            nanCount = nanCount.add(growth);
+            updateNaNCounter();
+            
+            setTimeout(growNaNCount, 1000); // 每秒一次
+        }
+        
+        // 标签切换函数
+        function openTab(tabName) {
+            // 隐藏所有标签内容
+            var tabContents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = 'none';
+            }
+            
+            // 移除所有按钮的active类
+            var tabButtons = document.getElementsByClassName('tab-btn');
+            for (var i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            // 显示选中的标签内容并激活对应的按钮
+            document.getElementById(tabName).style.display = 'block';
+            event.currentTarget.classList.add('active');
+        }
+        
+        // 页面加载完成后启动计数器
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNaNCounter();
+            setTimeout(growNaNCount, 1000); // 开始每秒更新
+        });
+    </script>
+</body>
+</html>
